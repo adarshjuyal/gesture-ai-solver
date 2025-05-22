@@ -1,0 +1,54 @@
+/* General body and font styles */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f0f4f8;
+}
+
+/* Container for the main layout */
+.container {
+    max-width: 1280px;
+}
+
+/* Styling for the video feed image */
+.video-feed {
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Styling for the AI output display box */
+.ai-output-box {
+    min-height: 100px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    word-wrap: break-word;
+    /* Ensures long words break and wrap */
+    white-space: pre-wrap;
+    /* Preserves whitespace and line breaks from AI output */
+}
+
+/* Loading spinner animation */
+.loading-spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-left-color: #3b82f6;
+    /* Blue color for the spinning part */
+    border-radius: 50%;
+    /* Makes it a circle */
+    width: 24px;
+    height: 24px;
+    animation: spin 1s linear infinite;
+    /* Spin animation */
+}
+
+/* Keyframe animation for the spinner */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

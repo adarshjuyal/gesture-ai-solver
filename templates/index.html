@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hand Drawing Math Solver</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen flex items-center justify-center py-10">
+    <div class="container mx-auto p-6 bg-white rounded-xl shadow-2xl flex flex-col lg:flex-row gap-8">
+        <div class="lg:w-2/3 flex flex-col items-center">
+            <h1 class="text-3xl font-bold text-gray-800 mb-6">Hand Drawing Math Solver</h1>
+            <img src="{{ url_for('video_feed') }}" class="video-feed mb-6" alt="Video Feed">
+            <div class="text-center text-gray-600">
+                <p class="mb-2"><strong>Instructions:</strong></p>
+                <ul class="list-disc list-inside text-left mx-auto max-w-xs">
+                    <li>Raise your <span class="font-semibold text-purple-600">index finger</span> to draw.</li>
+                    <li>Raise your <span class="font-semibold text-green-600">thumb</span> to clear the canvas.</li>
+                    <li>Raise <span class="font-semibold text-blue-600">all four fingers</span> (index, middle, ring, pinky) to send the drawing to AI for solving.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="lg:w-1/3 flex flex-col">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">AI Solution</h2>
+            <div id="ai-output" class="ai-output-box flex-grow flex items-center justify-center text-gray-700 text-lg">
+                <p>Draw a math problem to get started!</p>
+            </div>
+            <div id="ai-status" class="mt-4 text-center text-gray-600">
+                </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to fetch AI output periodically
+        function fetchAiOutput() {
+            fetch('/ai_output')
+                .then(response => response.json())
+                .then(data => {
+                    const outputDiv = document.getElementById('ai-output');
+                    const statusDiv = document.getElementById('ai-status');
+
+                    if (data.processing) {
+                        outputDiv.innerHTML = `<div class="loading-spinner"></div><p class="ml-2">AI is thinking...</p>`;
+                        outputDiv.classList.add('flex', 'items-center', 'justify-center');
+                        statusDiv.textContent = "AI is processing your request.";
+                    } else {
+                        outputDiv.textContent = data.output;
+                        outputDiv.classList.remove('flex', 'items-center', 'justify-center');
+                        statusDiv.textContent = "AI response received.";
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching AI output:', error);
+                    document.getElementById('ai-output').textContent = 'Error fetching AI response.';
+                    document.getElementById('ai-status').textContent = "Connection error.";
+                });
+        }
+
+        // Fetch AI output every 1 second
+        setInterval(fetchAiOutput, 1000);
+    </script>
+</body>
+</html>
